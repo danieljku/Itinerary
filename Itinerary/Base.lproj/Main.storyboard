@@ -8,7 +8,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Itinerary" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginScreen" id="BYZ-38-t0r" customClass="ViewController" customModule="Itinerary" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -23,9 +23,6 @@
                                 <state key="normal" title="FB Login">
                                     <color key="titleColor" red="0.94813451009770688" green="1" blue="0.93422613725794679" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
-                                <connections>
-                                    <segue destination="rBc-VW-Bfw" kind="show" identifier="LogIn" id="whk-et-cCX"/>
-                                </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="E-mail address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ECC-ge-Hxx">
                                 <rect key="frame" x="50" y="161" width="500" height="30"/>
@@ -62,6 +59,10 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="K3F-EN-3XL">
+                                <rect key="frame" x="282" y="281" width="37" height="37"/>
+                                <color key="color" red="0.10010882012039828" green="0.47679728253176101" blue="0.93913612565445026" alpha="1" colorSpace="calibratedRGB"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -69,7 +70,9 @@
                             <constraint firstItem="H1c-ff-9zl" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="50" id="AUE-Tf-wT9"/>
                             <constraint firstAttribute="trailing" secondItem="F0i-jO-XLP" secondAttribute="trailing" constant="50" id="Clu-Y7-EkX"/>
                             <constraint firstItem="XNf-Iy-49L" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="50" id="ECo-M5-av0"/>
+                            <constraint firstItem="K3F-EN-3XL" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="Ewy-sh-eVo"/>
                             <constraint firstItem="F0i-jO-XLP" firstAttribute="top" secondItem="H1c-ff-9zl" secondAttribute="bottom" constant="20" id="IHR-yR-Ubz"/>
+                            <constraint firstItem="K3F-EN-3XL" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="J3n-B0-cHx"/>
                             <constraint firstAttribute="trailing" secondItem="SXO-dj-T9u" secondAttribute="trailing" constant="50" id="NEl-ne-PeW"/>
                             <constraint firstAttribute="trailing" secondItem="ECC-ge-Hxx" secondAttribute="trailing" constant="50" id="QOx-96-HIq"/>
                             <constraint firstAttribute="trailing" secondItem="hAR-ye-F9B" secondAttribute="trailing" constant="50" id="RDY-dr-UWE"/>
@@ -87,17 +90,18 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="facebookLoginButton" destination="hAR-ye-F9B" id="Vlg-2m-fmt"/>
+                        <outlet property="activitySpinner" destination="K3F-EN-3XL" id="Uyb-kn-JHi"/>
+                        <outlet property="loginButton" destination="hAR-ye-F9B" id="VHK-8v-aZL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="305" y="277"/>
         </scene>
-        <!--View Controller-->
+        <!--Home View-->
         <scene sceneID="ilV-uV-NTl">
             <objects>
-                <viewController id="rBc-VW-Bfw" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HomeView" id="rBc-VW-Bfw" customClass="HomeView" customModule="Itinerary" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="38S-qF-Mof"/>
                         <viewControllerLayoutGuide type="bottom" id="BQO-SZ-Ny5"/>
@@ -112,6 +116,13 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l3H-8y-yKX">
+                                <rect key="frame" x="20" y="173" width="81" height="30"/>
+                                <state key="normal" title="Logout"/>
+                                <connections>
+                                    <action selector="logoutButton:" destination="rBc-VW-Bfw" eventType="touchUpInside" id="3sy-uu-e4j"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
