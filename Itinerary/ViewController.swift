@@ -48,6 +48,7 @@ class ViewController: UIViewController, FBSDKLoginButtonDelegate {
         activitySpinner.hidden = false
         activitySpinner.startAnimating()
         
+        
         if let error = error {
             print(error.localizedDescription)
             return
