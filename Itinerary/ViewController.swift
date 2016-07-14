@@ -17,14 +17,18 @@ class ViewController: UIViewController, FBSDKLoginButtonDelegate {
     var fbLoginSuccess = false
     @IBOutlet weak var loginButton: FBSDKLoginButton!
     @IBOutlet weak var activitySpinner: UIActivityIndicatorView!
+    @IBOutlet weak var emailField: UITextField!
+    @IBOutlet weak var passwordField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
+        
         activitySpinner.hidden = true
         
         FIRAuth.auth()?.addAuthStateDidChangeListener { auth, user in
-            if let user = user {
+            if user != nil {
                 // User is signed in.
                 let mainStoryBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
                 let homeViewController: UIViewController = mainStoryBoard.instantiateViewControllerWithIdentifier("HomeView")
@@ -36,7 +40,23 @@ class ViewController: UIViewController, FBSDKLoginButtonDelegate {
             }
         }
     }
+    
+    func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
+    }
 
+    @IBAction func signInButton(sender: AnyObject) {
+        FIRAuth.auth()?.signInWithEmail(emailField.text!, password: passwordField.text!) { (user, error) in
+            if error != nil{
+                print(error)
+                return
+            }
+            let mainStoryBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let homeViewController: UIViewController = mainStoryBoard.instantiateViewControllerWithIdentifier("HomeView")
+            self.presentViewController(homeViewController, animated: true, completion: nil)
+        }
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -55,10 +75,27 @@ class ViewController: UIViewController, FBSDKLoginButtonDelegate {
         }else if result.isCancelled{
             //return to screen
         }else{
-            print("User Logged In!!!!!!!!!!!!!!!!!")
+            let ref = FIRDatabase.database().reference()
             let credential = FIRFacebookAuthProvider.credentialWithAccessToken(FBSDKAccessToken.currentAccessToken().tokenString)
             FIRAuth.auth()?.signInWithCredential(credential) { (user, error) in
-                print("USER LOGGED INTO FIREBASE!!!!!!!")
+                if error != nil{
+                    print(error)
+                    return
+                }
+                if let user = FIRAuth.auth()?.currentUser {
+                    let name = user.displayName!
+                    let email = user.email!
+                    //let photoUrl = user.photoURL!
+                    let userID = user.uid;
+                    
+                    let fbUser = ["uid": userID,
+                                  "name": name,
+                                  "email": email]
+                    
+                    ref.child("Users").child(userID).setValue(fbUser)
+                } else {
+                    // No user is signed in.
+                }
             }
         }
     }
