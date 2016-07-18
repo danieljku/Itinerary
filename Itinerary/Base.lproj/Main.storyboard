@@ -387,6 +387,9 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="73z-3K-VsO">
                                                 <rect key="frame" x="246" y="379" width="109" height="30"/>
                                                 <state key="normal" title="Add an Itinerary"/>
+                                                <connections>
+                                                    <segue destination="PqV-1k-tUk" kind="show" id="0J7-PY-ELb"/>
+                                                </connections>
                                             </button>
                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="rZ3-9t-XwU">
                                                 <rect key="frame" x="0.0" y="445" width="600" height="255"/>
@@ -460,6 +463,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ipp-BU-18h" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1760" y="-220"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="yzh-3d-kkR">
+            <objects>
+                <viewController id="PqV-1k-tUk" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="86J-ob-K11"/>
+                        <viewControllerLayoutGuide type="bottom" id="wDX-d3-e0Q"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="gQi-bd-Sx9">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="800"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fdL-xH-oko" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2425" y="-220"/>
         </scene>
         <!--Item 2-->
         <scene sceneID="F0g-w3-Vn1">

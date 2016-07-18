@@ -83,7 +83,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
                     return
                 }
                 let storageRef = FIRStorage.storage().reference()
-                let profilePic = FBSDKGraphRequest(graphPath: "me/picture", parameters: ["height": 240, "width": 240, "redirect": false], HTTPMethod: "GET")
+                let profilePic = FBSDKGraphRequest(graphPath: "me/picture", parameters: ["height": 240, "width": "240", "redirect": false], HTTPMethod: "GET")
                 profilePic.startWithCompletionHandler({(connection, result, error) -> Void in
                     if error != nil{
                         print(error)
@@ -101,25 +101,24 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
                             }
                         }
                     }
-                    
-                })
-                
-                if let user = FIRAuth.auth()?.currentUser {
-                    if let photoUrl = user.photoURL?.absoluteString{
+                    if let user = FIRAuth.auth()?.currentUser {
+                        let photoUrl = urlPic
                         let name = user.displayName!
                         let email = user.email!
                         let userID = user.uid;
                         
                         let fbUser = ["uid": userID,
-                                      "name": name,
-                                      "email": email,
-                                      "photoURL": photoUrl]
+                            "name": name,
+                            "email": email,
+                            "photoURL": photoUrl]
                         
                         ref.child("Users").child(userID).setValue(fbUser)
+                        
+                    } else {
+                        // No user is signed in.
                     }
-                } else {
-                    // No user is signed in.
-                }
+                })
+                
             }
         }
     }
