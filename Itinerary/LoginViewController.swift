@@ -31,8 +31,8 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
             if user != nil {
                 // User is signed in.
                 let mainStoryBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-                let homeViewController: UIViewController = mainStoryBoard.instantiateViewControllerWithIdentifier("HomeView")
-                self.presentViewController(homeViewController, animated: true, completion: nil)
+                let homeViewController: UIViewController = mainStoryBoard.instantiateViewControllerWithIdentifier("TabBarController")
+                    UIApplication.sharedApplication().delegate?.window!?.rootViewController = homeViewController
             } else {
                 // No user is signed in.
                 self.loginButton.readPermissions = ["public_profile", "email", "user_friends"]
