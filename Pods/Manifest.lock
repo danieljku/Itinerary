@@ -23,6 +23,9 @@ PODS:
   - Firebase/Database (3.3.0):
     - Firebase/Analytics (= 3.3.0)
     - FirebaseDatabase (= 3.0.2)
+  - Firebase/Storage (3.3.0):
+    - Firebase/Analytics (= 3.3.0)
+    - FirebaseStorage (= 1.0.2)
   - FirebaseAnalytics (3.2.1):
     - FirebaseInstanceID (~> 1.0)
     - GoogleInterchangeUtilities (~> 1.2)
@@ -36,6 +39,9 @@ PODS:
   - FirebaseDatabase (3.0.2):
     - FirebaseAnalytics (~> 3.2)
   - FirebaseInstanceID (1.0.7)
+  - FirebaseStorage (1.0.2):
+    - FirebaseAnalytics (~> 3.2)
+    - GoogleNetworkingUtilities (~> 1.2)
   - GoogleInterchangeUtilities (1.2.1):
     - GoogleSymbolUtilities (~> 1.0)
   - GoogleNetworkingUtilities (1.2.1):
@@ -54,6 +60,7 @@ DEPENDENCIES:
   - Firebase
   - Firebase/Auth
   - Firebase/Database
+  - Firebase/Storage
 
 SPEC CHECKSUMS:
   Bolts: 89c0c6dd1b9c975a3452a62d57a6be6739e5f433
@@ -65,12 +72,13 @@ SPEC CHECKSUMS:
   FirebaseAuth: 5efddc3fae47042b73585f083f956462be4f5b8e
   FirebaseDatabase: 59bea2e7dfd81b3b8b2f8e396caf1a52c2ced6f7
   FirebaseInstanceID: a9d923f3d0b6fbf9fac89310860357aaadc34be5
+  FirebaseStorage: fa2a87dee81f682f553af6839daa37a750e65f6a
   GoogleInterchangeUtilities: def8415a862effc67d549d5b5b0b9c7a2f97d4de
   GoogleNetworkingUtilities: 3e83269048cfb498dc7ec83ab36813360965c74f
   GoogleParsingUtilities: 30b3896f9ee167dc78747f013d3de157ced1cadf
   GoogleSymbolUtilities: 33117db1b5f290c6fbf259585e4885b4c84b98d7
   GoogleUtilities: 56c5ac05b7aa5dc417a1bb85221a9516e04d7032
 
-PODFILE CHECKSUM: 19e1fb42806acae8db8af9e62b405bb5851a6b22
+PODFILE CHECKSUM: 992a093f57891cdbd4aae5628edf154d7e48ede7
 
 COCOAPODS: 1.0.1

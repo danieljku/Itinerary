@@ -8,25 +8,29 @@
 
 import UIKit
 import Firebase
-import FirebaseAuth
+import FirebaseStorage
 import FBSDKLoginKit
 
-class HomeView: UIViewController {
-    @IBOutlet weak var uidLabel: UILabel!
+class ProfileViewController: UIViewController {
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var profileImageView: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         let ref = FIRDatabase.database().reference()
+        
         let userID = FIRAuth.auth()?.currentUser?.uid
         ref.child("Users").child(userID!).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
             // Get user value
-            let username = snapshot.value!["name"] as! String
-            self.nameLabel.text = username
+            self.nameLabel.text = snapshot.value!["name"] as? String
             self.emailLabel.text = snapshot.value!["email"] as? String
-            self.uidLabel.text = snapshot.value!["uid"] as? String
+            if let profileImageURL = snapshot.value!["photoURL"] as? String{
+                let url = NSURL(string: profileImageURL)
+                let imageData = NSData(contentsOfURL: url!)
+                self.profileImageView.image = UIImage(data: imageData!)
+            }
         })
     }
 
