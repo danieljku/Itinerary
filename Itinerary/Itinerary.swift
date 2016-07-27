@@ -17,4 +17,6 @@ class Itinerary{
     var cost: Double = 0.0
     var category: String = ""
     var tripSummary: String = ""
+    var itineraries: [String] = []
+    var count: Int = 0
 }

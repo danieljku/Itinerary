@@ -9,6 +9,10 @@
 import UIKit
 
 class ItinerarySearchTableViewCell: UITableViewCell {
-
-
+    @IBOutlet weak var itineraryImage: UIImageView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var costLabel: UILabel!
+    @IBOutlet weak var numOfLikesLabel: UILabel!
+    @IBOutlet weak var cityLabel: UILabel!
+    @IBOutlet weak var categoryLabel: UILabel!
 }

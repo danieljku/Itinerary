@@ -18,6 +18,7 @@ class SignUpViewController: UIViewController, UINavigationControllerDelegate, UI
     @IBOutlet weak var confirmPassField: UITextField!
     let ref = FIRDatabase.database().reference()
     let imagePicker = UIImagePickerController()
+    var users = [User()]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -105,10 +106,18 @@ class SignUpViewController: UIViewController, UINavigationControllerDelegate, UI
                     print(error)
                     return
                 }
+                let currentUser = User()
                 if let photoImageURL = metadata?.downloadURL()?.absoluteString{
                     let userID = user!.uid
                     let name = self.nameField.text!
                     let email = self.emailField.text!
+                    
+                    currentUser.email = email
+                    currentUser.name = name
+                    currentUser.uid = userID
+                    currentUser.photoURL = photoImageURL
+                    
+                    self.users.append(currentUser)
                     
                     let user = ["uid": userID,
                         "name": name,

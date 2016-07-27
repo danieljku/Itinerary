@@ -15,6 +15,7 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var profileImageView: UIImageView!
+    let itinerary = Itinerary()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +34,8 @@ class ProfileViewController: UIViewController {
             }
         })
     }
+    
+    
 
     @IBAction func logoutButton(sender: AnyObject) {
         try! FIRAuth.auth()!.signOut()
