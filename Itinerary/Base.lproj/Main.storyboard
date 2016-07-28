@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -490,7 +490,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dZb-7c-FfF">
-                                <rect key="frame" x="9" y="64" width="591" height="687"/>
+                                <rect key="frame" x="9" y="64" width="591" height="736"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OP1-UC-n5v">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="800"/>
@@ -559,11 +559,21 @@
                                                 </constraints>
                                                 <segments>
                                                     <segment title="Tourist"/>
-                                                    <segment title="Date"/>
+                                                    <segment title="Couple"/>
                                                     <segment title="Friends"/>
                                                     <segment title="Family"/>
                                                 </segments>
                                             </segmentedControl>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IUv-hs-qD9">
+                                                <rect key="frame" x="180" y="123" width="240" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="240" id="QuN-S1-ygh"/>
+                                                </constraints>
+                                                <state key="normal" title="Button"/>
+                                                <connections>
+                                                    <action selector="addImage:" destination="PqV-1k-tUk" eventType="touchUpInside" id="Vk9-5P-ezK"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -578,12 +588,14 @@
                                             <constraint firstItem="WIb-Ca-0A7" firstAttribute="top" secondItem="OP1-UC-n5v" secondAttribute="top" constant="25" id="ZZ5-Qw-CqJ"/>
                                             <constraint firstAttribute="height" constant="800" id="hUe-Q2-JH3"/>
                                             <constraint firstItem="pfp-la-bc5" firstAttribute="centerX" secondItem="OP1-UC-n5v" secondAttribute="centerX" id="lNX-Z0-anm"/>
+                                            <constraint firstItem="IUv-hs-qD9" firstAttribute="top" secondItem="OP1-UC-n5v" secondAttribute="top" constant="123" id="lUS-M5-DDS"/>
                                             <constraint firstItem="KQx-p8-ngX" firstAttribute="centerX" secondItem="OP1-UC-n5v" secondAttribute="centerX" id="nVh-EU-dUD"/>
                                             <constraint firstItem="KQx-p8-ngX" firstAttribute="top" secondItem="WIb-Ca-0A7" secondAttribute="bottom" constant="25" id="pvm-X8-IUu"/>
                                             <constraint firstItem="u9I-1b-rRa" firstAttribute="centerX" secondItem="OP1-UC-n5v" secondAttribute="centerX" id="qtK-Hi-qfN"/>
                                             <constraint firstItem="caF-np-Zlk" firstAttribute="top" secondItem="060-io-3ZO" secondAttribute="bottom" constant="20" id="rCO-c2-Hwm"/>
                                             <constraint firstItem="pfp-la-bc5" firstAttribute="top" secondItem="caF-np-Zlk" secondAttribute="bottom" constant="20" id="ud4-jt-tXu"/>
                                             <constraint firstAttribute="bottom" secondItem="8TS-Ox-4Sv" secondAttribute="bottom" constant="180" id="war-hU-2hr"/>
+                                            <constraint firstItem="IUv-hs-qD9" firstAttribute="centerX" secondItem="OP1-UC-n5v" secondAttribute="centerX" id="zdg-g5-asF"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -625,6 +637,7 @@
                         <outlet property="categorySegControl" destination="pfp-la-bc5" id="bJ2-6U-yJJ"/>
                         <outlet property="cityText" destination="w2m-lq-2Ob" id="K3U-ou-Uej"/>
                         <outlet property="durationText" destination="060-io-3ZO" id="t82-Ua-ziQ"/>
+                        <outlet property="itineraryImage" destination="WIb-Ca-0A7" id="C9m-CQ-kCD"/>
                         <outlet property="itineraryTitleText" destination="KQx-p8-ngX" id="9j8-cS-idu"/>
                         <outlet property="roughCostText" destination="caF-np-Zlk" id="49K-Ri-szT"/>
                         <outlet property="summaryTextView" destination="u9I-1b-rRa" id="27d-bl-zEi"/>
@@ -932,6 +945,7 @@
                     <connections>
                         <outlet property="categoryLabel" destination="KIt-6u-fpd" id="8Wr-Eb-Obg"/>
                         <outlet property="cityLabel" destination="D7a-hY-9gP" id="Uak-4M-JMU"/>
+                        <outlet property="imageScrollView" destination="R9i-el-ioH" id="ShT-Yt-Nls"/>
                         <outlet property="roughtCostLabel" destination="NrL-10-UHL" id="dwp-Pn-gIB"/>
                         <outlet property="timeOfItineraryLabel" destination="lp1-Lg-tkW" id="opa-vJ-K4G"/>
                         <outlet property="titleLabel" destination="ml5-1I-5tp" id="0Ni-Mu-ITe"/>
@@ -965,8 +979,8 @@
         <image name="backgroundLogin" width="760" height="405"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="YjI-xO-jR3"/>
-        <segue reference="Tgq-Pk-ijc"/>
         <segue reference="tql-DI-bfa"/>
+        <segue reference="Tgq-Pk-ijc"/>
+        <segue reference="YjI-xO-jR3"/>
     </inferredMetricsTieBreakers>
 </document>

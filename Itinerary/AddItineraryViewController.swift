@@ -10,7 +10,8 @@ import UIKit
 import Firebase
 import FBSDKLoginKit
 
-class AddItineraryViewController: UIViewController {
+class AddItineraryViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    @IBOutlet weak var itineraryImage: UIImageView!
     @IBOutlet weak var itineraryTitleText: UITextField!
     @IBOutlet weak var cityText: UITextField!
     @IBOutlet weak var durationText: UITextField!
@@ -19,16 +20,22 @@ class AddItineraryViewController: UIViewController {
     @IBOutlet weak var summaryTextView: UITextView!
     let ref = FIRDatabase.database().reference()
     let itineraryID = NSUUID().UUIDString
+    let imagePicker = UIImagePickerController()
+    var imageArray = [UIImage]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        imagePicker.delegate = self
+        imagePicker.allowsEditing = true
+
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let itineraryInfoViewController = segue.destinationViewController as! ItineraryInfoViewController
@@ -37,13 +44,37 @@ class AddItineraryViewController: UIViewController {
         }
     }
     
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        var selectedImage: UIImage?
+        
+        if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage{
+            selectedImage = editedImage
+        }else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage{
+            selectedImage = originalImage
+        }
+        if let image = selectedImage{
+            itineraryImage.image = image
+            imageArray.append(image)
+        }
+        dismissViewControllerAnimated(true, completion: nil)
+        
+    }
+    
+    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    @IBAction func addImage(sender: AnyObject) {
+        presentViewController(imagePicker, animated: true, completion: nil)
+    }
+    
     @IBAction func createItineraryButton(sender: AnyObject) {
         var category = "Friends"
         
         if(categorySegControl.selectedSegmentIndex == 0){
             category = "Tourist"
         }else if(categorySegControl.selectedSegmentIndex == 1){
-            category = "Date"
+            category = "Couple"
         }else if(categorySegControl.selectedSegmentIndex == 2){
             category = "Friends"
         }else if(categorySegControl.selectedSegmentIndex == 3){
@@ -66,8 +97,38 @@ class AddItineraryViewController: UIViewController {
                          "UserID": userID
                          ]
         
+        var i = 0
+        var imageURLArray = [String]()
+
+        while i < imageArray.count{
+            let imageName = NSUUID().UUIDString
+            let storageRef = FIRStorage.storage().reference().child("\(imageName)")
+            let uploadData = UIImagePNGRepresentation(imageArray[i])
+            
+            storageRef.putData(uploadData!, metadata: nil, completion: { (metadata, error) in
+                if error != nil{
+                    print(error)
+                    return
+                }
+                    if let photoImageURL = metadata?.downloadURL()?.absoluteString{
+                       // self.ref.child("Photos").child(self.itineraryID).child("\(i)").updateChildValues(["image": photoImageURL])
+                        imageURLArray.append(photoImageURL)
+                    }
+            
+                if imageURLArray.count == self.imageArray.count {
+                    var j = 0
+                    while(j < imageURLArray.count){
+                         self.ref.child("Photos").child(self.itineraryID).child("\(j)").updateChildValues(["image": imageURLArray[j]])
+                        //imageDictionary[String(j)] = imageURLArray[j]
+                        j += 1
+                    }
+                }
+            })
+            i += 1
+        }
+        
         ref.child("Itineraries").child(itineraryID).setValue(itinerary)
         ref.child("Users").child(userID!).child("MyItineraries").updateChildValues([itineraryID: itineraryTitleText.text!])
     }
-
+    
 }

@@ -14,10 +14,13 @@ class ItineraryInfoViewController: UIViewController {
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var timeOfItineraryLabel: UILabel!
     @IBOutlet weak var roughtCostLabel: UILabel!
+    @IBOutlet weak var imageScrollView: UIScrollView!
     @IBOutlet weak var categoryLabel: UILabel!
     @IBOutlet weak var tripSummaryTextView: UITextView!
-    var userID: String!
     
+    var userID: String!
+    var myImages = [UIImage]()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -32,15 +35,44 @@ class ItineraryInfoViewController: UIViewController {
             self.roughtCostLabel.text = "$\((round(100.00 * (Double)((snapshot.value!["Cost"] as? String)!)!))/100.00)"
             self.categoryLabel.text = snapshot.value!["Category"] as? String
             self.tripSummaryTextView.text = snapshot.value!["Summary"] as? String
-
-
-
-//            if let profileImageURL = snapshot.value!["PhotoURL"] as? String{
-//                let url = NSURL(string: profileImageURL)
-//                let imageData = NSData(contentsOfURL: url!)
-                //self.profileImageView.image = UIImage(data: imageData!)
-            //}
         })
+            
+        ref.child("Photos").child(userID).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+            var index = 0
+            let numOfPhotos = Int(snapshot.childrenCount)
+            
+            while(index < numOfPhotos){
+                if let profileImageURL = snapshot.childSnapshotForPath(String(index)).value!["image"] as? String{
+                    let url = NSURL(string: profileImageURL)
+                    let imageData = NSData(contentsOfURL: url!)
+                    let image  = UIImage(data: imageData!)
+                    self.myImages.append(image!)
+                }
+                index += 1
+            }
+            let imageWidth:CGFloat = 120
+            let imageHeight:CGFloat = 120
+            var xPosition:CGFloat = 0
+            var scrollViewSize:CGFloat=0
+            
+            
+            for image in self.myImages {
+                let myImageView:UIImageView = UIImageView()
+                myImageView.image = image
+                
+                myImageView.frame.size.width = imageWidth
+                myImageView.frame.size.height = imageHeight
+                myImageView.frame.origin.x = xPosition
+                myImageView.frame.origin.y = 10
+                
+                self.imageScrollView.addSubview(myImageView)
+                xPosition += imageWidth
+                scrollViewSize += imageWidth
+            }
+            self.imageScrollView.contentSize = CGSize(width: scrollViewSize, height: imageHeight)
+
+        })
+        
     }
 
     override func didReceiveMemoryWarning() {

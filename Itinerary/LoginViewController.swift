@@ -93,7 +93,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
                     
                     if let imageData = NSData(contentsOfURL: NSURL(string: urlPic)!){
                         let profilePicRef = storageRef.child(user!.uid)
-                        let uploadTask = profilePicRef.putData(imageData, metadata: nil){ metadata, error in
+                        _ = profilePicRef.putData(imageData, metadata: nil){ metadata, error in
                             if error != nil{
                                 print(error)
                                 return
