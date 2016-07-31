@@ -11,7 +11,7 @@ import Firebase
 import FBSDKLoginKit
 
 class AddItineraryViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    @IBOutlet weak var itineraryImage: UIImageView!
+    @IBOutlet weak var imageScrollView: UIScrollView!
     @IBOutlet weak var itineraryTitleText: UITextField!
     @IBOutlet weak var cityText: UITextField!
     @IBOutlet weak var durationText: UITextField!
@@ -28,19 +28,35 @@ class AddItineraryViewController: UIViewController, UIImagePickerControllerDeleg
         // Do any additional setup after loading the view.
         imagePicker.delegate = self
         imagePicker.allowsEditing = true
-
+        
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SignUpViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
+        imagePicker.delegate = self
+        imagePicker.allowsEditing = true
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
+    }
 
+    @IBAction func cancelButton(sender: AnyObject) {
+        let mainStoryBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let homeViewController: UIViewController = mainStoryBoard.instantiateViewControllerWithIdentifier("TabBarController")
+        self.presentViewController(homeViewController, animated: true, completion: nil)
+    }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let itineraryInfoViewController = segue.destinationViewController as! ItineraryInfoViewController
         if segue.identifier == "ItineraryInfo"{
             itineraryInfoViewController.userID = itineraryID
+            itineraryInfoViewController.myImages = imageArray
+            itineraryInfoViewController.prevLocation = "AddItineraryViewController"
         }
     }
     
@@ -53,8 +69,29 @@ class AddItineraryViewController: UIViewController, UIImagePickerControllerDeleg
             selectedImage = originalImage
         }
         if let image = selectedImage{
-            itineraryImage.image = image
             imageArray.append(image)
+            
+            let imageWidth:CGFloat = 120
+            let imageHeight:CGFloat = 120
+            var xPosition:CGFloat = 0
+            var scrollViewSize:CGFloat=0
+            
+            
+            for image in self.imageArray {
+                let myImageView:UIImageView = UIImageView()
+                myImageView.image = image
+                
+                myImageView.frame.size.width = imageWidth
+                myImageView.frame.size.height = imageHeight
+                myImageView.frame.origin.x = xPosition
+                myImageView.frame.origin.y = 10
+                
+                
+                self.imageScrollView.addSubview(myImageView)
+                xPosition += imageWidth + 10
+                scrollViewSize += imageWidth + 10
+            }
+            self.imageScrollView.contentSize = CGSize(width: scrollViewSize, height: imageHeight)
         }
         dismissViewControllerAnimated(true, completion: nil)
         
@@ -111,7 +148,6 @@ class AddItineraryViewController: UIViewController, UIImagePickerControllerDeleg
                     return
                 }
                     if let photoImageURL = metadata?.downloadURL()?.absoluteString{
-                       // self.ref.child("Photos").child(self.itineraryID).child("\(i)").updateChildValues(["image": photoImageURL])
                         imageURLArray.append(photoImageURL)
                     }
             
@@ -119,7 +155,6 @@ class AddItineraryViewController: UIViewController, UIImagePickerControllerDeleg
                     var j = 0
                     while(j < imageURLArray.count){
                          self.ref.child("Photos").child(self.itineraryID).child("\(j)").updateChildValues(["image": imageURLArray[j]])
-                        //imageDictionary[String(j)] = imageURLArray[j]
                         j += 1
                     }
                 }

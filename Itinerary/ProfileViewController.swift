@@ -15,7 +15,6 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var profileImageView: UIImageView!
-    let itinerary = Itinerary()
     
     override func viewDidLoad() {
         super.viewDidLoad()

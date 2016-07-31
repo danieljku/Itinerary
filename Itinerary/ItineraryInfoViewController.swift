@@ -17,13 +17,23 @@ class ItineraryInfoViewController: UIViewController {
     @IBOutlet weak var imageScrollView: UIScrollView!
     @IBOutlet weak var categoryLabel: UILabel!
     @IBOutlet weak var tripSummaryTextView: UITextView!
+    @IBOutlet weak var tableViewButton: UIBarButtonItem!
     
     var userID: String!
     var myImages = [UIImage]()
+    var prevLocation = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        if prevLocation == "AddItineraryViewController"{
+            tableViewButton.title = "Done"
+        }else if prevLocation == "ItinerarySearchViewController"{
+            tableViewButton.title = "Back"
+        }else{
+            tableViewButton.title = "Error"
+        }
+        
         // Do any additional setup after loading the view.
         let ref = FIRDatabase.database().reference()
         
@@ -38,17 +48,22 @@ class ItineraryInfoViewController: UIViewController {
         })
             
         ref.child("Photos").child(userID).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+            
             var index = 0
             let numOfPhotos = Int(snapshot.childrenCount)
+            var storageImages = [UIImage]()
             
             while(index < numOfPhotos){
                 if let profileImageURL = snapshot.childSnapshotForPath(String(index)).value!["image"] as? String{
                     let url = NSURL(string: profileImageURL)
                     let imageData = NSData(contentsOfURL: url!)
                     let image  = UIImage(data: imageData!)
-                    self.myImages.append(image!)
+                    storageImages.append(image!)
                 }
                 index += 1
+            }
+            if self.prevLocation == "ItinerarySearchViewController"{
+                self.myImages = storageImages
             }
             let imageWidth:CGFloat = 120
             let imageHeight:CGFloat = 120
@@ -66,15 +81,25 @@ class ItineraryInfoViewController: UIViewController {
                 myImageView.frame.origin.y = 10
                 
                 self.imageScrollView.addSubview(myImageView)
-                xPosition += imageWidth
-                scrollViewSize += imageWidth
+                xPosition += imageWidth + 10
+                scrollViewSize += imageWidth + 10
             }
             self.imageScrollView.contentSize = CGSize(width: scrollViewSize, height: imageHeight)
-
         })
         
     }
-
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let tabBarViewController = segue.destinationViewController as! TabBarViewController
+        if segue.identifier == "TabBarSelect"{
+            if prevLocation == "AddItineraryViewController"{
+                tabBarViewController.tabBarIndex = 0
+            }else{
+                tabBarViewController.tabBarIndex = 1
+            }
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

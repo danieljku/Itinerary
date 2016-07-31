@@ -10,12 +10,12 @@
 		121658301D47E826006F06A1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1216582E1D47E826006F06A1 /* Main.storyboard */; };
 		12765EE71D3822FA0012A567 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12765EE61D3822FA0012A567 /* SignUpViewController.swift */; };
 		12765EE91D3842680012A567 /* PasswordResetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12765EE81D3842680012A567 /* PasswordResetViewController.swift */; };
+		129083A21D4C07AF002174D6 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129083A11D4C07AF002174D6 /* TabBarViewController.swift */; };
+		129083A41D4C1379002174D6 /* FBLoadingScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129083A31D4C1379002174D6 /* FBLoadingScreenViewController.swift */; };
 		12A0A1701D36DA4700794076 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A0A16F1D36DA4700794076 /* ProfileViewController.swift */; };
 		12A14D0B1D3D9F7300601439 /* AddItineraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A14D0A1D3D9F7300601439 /* AddItineraryViewController.swift */; };
 		12A53BCF1D3EDC9200F9C7FF /* ItinerarySearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A53BCE1D3EDC9200F9C7FF /* ItinerarySearchViewController.swift */; };
 		12A53BD11D3EDCB100F9C7FF /* ItineraryInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A53BD01D3EDCB100F9C7FF /* ItineraryInfoViewController.swift */; };
-		12A53BD31D3EDCBE00F9C7FF /* Itinerary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A53BD21D3EDCBE00F9C7FF /* Itinerary.swift */; };
-		12A53BD51D3EDCC500F9C7FF /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A53BD41D3EDCC500F9C7FF /* User.swift */; };
 		12A53BD81D3EE29000F9C7FF /* ItinerarySearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A53BD71D3EE29000F9C7FF /* ItinerarySearchTableViewCell.swift */; };
 		12B588B01D357CE100853EE7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B588AF1D357CE100853EE7 /* AppDelegate.swift */; };
 		12B588B21D357CE100853EE7 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B588B11D357CE100853EE7 /* LoginViewController.swift */; };
@@ -29,12 +29,12 @@
 		1216582F1D47E826006F06A1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		12765EE61D3822FA0012A567 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		12765EE81D3842680012A567 /* PasswordResetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordResetViewController.swift; sourceTree = "<group>"; };
+		129083A11D4C07AF002174D6 /* TabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
+		129083A31D4C1379002174D6 /* FBLoadingScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FBLoadingScreenViewController.swift; sourceTree = "<group>"; };
 		12A0A16F1D36DA4700794076 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		12A14D0A1D3D9F7300601439 /* AddItineraryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddItineraryViewController.swift; sourceTree = "<group>"; };
 		12A53BCE1D3EDC9200F9C7FF /* ItinerarySearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItinerarySearchViewController.swift; sourceTree = "<group>"; };
 		12A53BD01D3EDCB100F9C7FF /* ItineraryInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItineraryInfoViewController.swift; sourceTree = "<group>"; };
-		12A53BD21D3EDCBE00F9C7FF /* Itinerary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Itinerary.swift; sourceTree = "<group>"; };
-		12A53BD41D3EDCC500F9C7FF /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		12A53BD71D3EE29000F9C7FF /* ItinerarySearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItinerarySearchTableViewCell.swift; sourceTree = "<group>"; };
 		12B588AC1D357CE100853EE7 /* Itinerary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Itinerary.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		12B588AF1D357CE100853EE7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -60,19 +60,47 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		12A14D091D3D90CC00601439 /* Models */ = {
+		129083A51D4C143D002174D6 /* UserHelperControllers */ = {
 			isa = PBXGroup;
 			children = (
-				12A53BD21D3EDCBE00F9C7FF /* Itinerary.swift */,
-				12A53BD41D3EDCC500F9C7FF /* User.swift */,
+				12765EE81D3842680012A567 /* PasswordResetViewController.swift */,
+				129083A31D4C1379002174D6 /* FBLoadingScreenViewController.swift */,
+			);
+			name = UserHelperControllers;
+			sourceTree = "<group>";
+		};
+		129083A61D4C1462002174D6 /* ItineraryFlowControllers */ = {
+			isa = PBXGroup;
+			children = (
+				12A14D0A1D3D9F7300601439 /* AddItineraryViewController.swift */,
+				12A53BD01D3EDCB100F9C7FF /* ItineraryInfoViewController.swift */,
+				12A53BCE1D3EDC9200F9C7FF /* ItinerarySearchViewController.swift */,
+			);
+			name = ItineraryFlowControllers;
+			sourceTree = "<group>";
+		};
+		129083A71D4C14E1002174D6 /* Models */ = {
+			isa = PBXGroup;
+			children = (
 			);
 			name = Models;
+			sourceTree = "<group>";
+		};
+		129083A81D4C14F8002174D6 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				129083A51D4C143D002174D6 /* UserHelperControllers */,
+				12D37B351D38078200A2E505 /* LoginFlowControllers */,
+				129083A61D4C1462002174D6 /* ItineraryFlowControllers */,
+			);
+			name = Controllers;
 			sourceTree = "<group>";
 		};
 		12A53BD61D3EE25400F9C7FF /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				12A53BD71D3EE29000F9C7FF /* ItinerarySearchTableViewCell.swift */,
+				129083A11D4C07AF002174D6 /* TabBarViewController.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -98,9 +126,9 @@
 		12B588AE1D357CE100853EE7 /* Itinerary */ = {
 			isa = PBXGroup;
 			children = (
+				129083A71D4C14E1002174D6 /* Models */,
 				12A53BD61D3EE25400F9C7FF /* Views */,
-				12A14D091D3D90CC00601439 /* Models */,
-				12D37B351D38078200A2E505 /* Controllers */,
+				129083A81D4C14F8002174D6 /* Controllers */,
 				12B588AF1D357CE100853EE7 /* AppDelegate.swift */,
 				12B588B61D357CE100853EE7 /* Assets.xcassets */,
 				1216582E1D47E826006F06A1 /* Main.storyboard */,
@@ -111,18 +139,14 @@
 			path = Itinerary;
 			sourceTree = "<group>";
 		};
-		12D37B351D38078200A2E505 /* Controllers */ = {
+		12D37B351D38078200A2E505 /* LoginFlowControllers */ = {
 			isa = PBXGroup;
 			children = (
 				12B588B11D357CE100853EE7 /* LoginViewController.swift */,
 				12765EE61D3822FA0012A567 /* SignUpViewController.swift */,
-				12765EE81D3842680012A567 /* PasswordResetViewController.swift */,
 				12A0A16F1D36DA4700794076 /* ProfileViewController.swift */,
-				12A14D0A1D3D9F7300601439 /* AddItineraryViewController.swift */,
-				12A53BD01D3EDCB100F9C7FF /* ItineraryInfoViewController.swift */,
-				12A53BCE1D3EDC9200F9C7FF /* ItinerarySearchViewController.swift */,
 			);
-			name = Controllers;
+			name = LoginFlowControllers;
 			sourceTree = "<group>";
 		};
 		A7C23C4A3A0091908C177473 /* Frameworks */ = {
@@ -268,15 +292,15 @@
 			files = (
 				12A14D0B1D3D9F7300601439 /* AddItineraryViewController.swift in Sources */,
 				12B588B21D357CE100853EE7 /* LoginViewController.swift in Sources */,
-				12A53BD51D3EDCC500F9C7FF /* User.swift in Sources */,
 				12A53BD11D3EDCB100F9C7FF /* ItineraryInfoViewController.swift in Sources */,
+				129083A21D4C07AF002174D6 /* TabBarViewController.swift in Sources */,
 				12765EE91D3842680012A567 /* PasswordResetViewController.swift in Sources */,
 				12A0A1701D36DA4700794076 /* ProfileViewController.swift in Sources */,
 				12A53BD81D3EE29000F9C7FF /* ItinerarySearchTableViewCell.swift in Sources */,
 				12765EE71D3822FA0012A567 /* SignUpViewController.swift in Sources */,
 				12A53BCF1D3EDC9200F9C7FF /* ItinerarySearchViewController.swift in Sources */,
-				12A53BD31D3EDCBE00F9C7FF /* Itinerary.swift in Sources */,
 				12B588B01D357CE100853EE7 /* AppDelegate.swift in Sources */,
+				129083A41D4C1379002174D6 /* FBLoadingScreenViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

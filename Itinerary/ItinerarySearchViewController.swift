@@ -13,7 +13,6 @@ class ItinerarySearchViewController: UIViewController, UITableViewDelegate, UITa
     @IBOutlet weak var tableView: UITableView!
     let ref = FIRDatabase.database().reference()
     var itineraryArray = [FIRDataSnapshot]()
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,6 +48,7 @@ class ItinerarySearchViewController: UIViewController, UITableViewDelegate, UITa
                 let indexPath = tableView.indexPathForSelectedRow!
                 let itineraryInfoViewController = segue.destinationViewController as! ItineraryInfoViewController
                 itineraryInfoViewController.userID = self.itineraryArray[indexPath.row].key
+                itineraryInfoViewController.prevLocation = "ItinerarySearchViewController"
             }
         }
     }
@@ -69,7 +69,15 @@ class ItinerarySearchViewController: UIViewController, UITableViewDelegate, UITa
                 cell.costLabel.text = snapshot.value!["Cost"] as? String
                 cell.categoryLabel.text = snapshot.value!["Category"] as? String
             })
-
+            self.ref.child("Photos").child(userID.key).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                if let profileImageURL = snapshot.childSnapshotForPath(String(0)).value!["image"] as? String{
+                    let url = NSURL(string: profileImageURL)
+                    let imageData = NSData(contentsOfURL: url!)
+                    let image  = UIImage(data: imageData!)
+                    cell.itineraryImage.image = image
+                }
+            })
+            
         }
         return cell
     }

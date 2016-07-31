@@ -15,7 +15,6 @@ import FBSDKLoginKit
 class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     var fbLoginSuccess = false
     @IBOutlet weak var loginButton: FBSDKLoginButton!
-    @IBOutlet weak var activitySpinner: UIActivityIndicatorView!
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
     
@@ -23,8 +22,6 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         super.viewDidLoad()
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(LoginViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
-        
-        activitySpinner.hidden = true
         
         FIRAuth.auth()?.addAuthStateDidChangeListener { auth, user in
             if user != nil {
@@ -34,7 +31,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
                     UIApplication.sharedApplication().delegate?.window!?.rootViewController = homeViewController
             } else {
                 // No user is signed in.
-                self.loginButton.readPermissions = ["public_profile", "email", "user_friends"]
+                self.loginButton.readPermissions = ["public_profile", "email"]
                 self.loginButton.delegate = self
             }
         }
@@ -52,7 +49,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
                 return
             }
             let mainStoryBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            let homeViewController: UIViewController = mainStoryBoard.instantiateViewControllerWithIdentifier("HomeView")
+            let homeViewController: UIViewController = mainStoryBoard.instantiateViewControllerWithIdentifier("TabBarController")
             self.presentViewController(homeViewController, animated: true, completion: nil)
         }
     }
@@ -64,15 +61,17 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
 
     func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError?) {
         
-        activitySpinner.hidden = false
-        activitySpinner.startAnimating()
-        
+        let mainStoryBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let homeViewController: UIViewController = mainStoryBoard.instantiateViewControllerWithIdentifier("BlankScreen")
+        UIApplication.sharedApplication().delegate?.window!?.rootViewController = homeViewController
         
         if let error = error {
             print(error.localizedDescription)
             return
         }else if result.isCancelled{
-            //return to screen
+            let mainStoryBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let homeViewController: UIViewController = mainStoryBoard.instantiateViewControllerWithIdentifier("LoginScreen")
+            UIApplication.sharedApplication().delegate?.window!?.rootViewController = homeViewController
         }else{
             let ref = FIRDatabase.database().reference()
             let credential = FIRFacebookAuthProvider.credentialWithAccessToken(FBSDKAccessToken.currentAccessToken().tokenString)
@@ -81,43 +80,42 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
                     print(error)
                     return
                 }
-                let storageRef = FIRStorage.storage().reference()
-                let profilePic = FBSDKGraphRequest(graphPath: "me/picture", parameters: ["height": 240, "width": "240", "redirect": false], HTTPMethod: "GET")
-                profilePic.startWithCompletionHandler({(connection, result, error) -> Void in
-                    if error != nil{
-                        print(error)
-                    }
-                    let dictionary = result as? NSDictionary
-                    let data = dictionary?.objectForKey("data")
-                    let urlPic = (data?.objectForKey("url"))! as! String
-                    
-                    if let imageData = NSData(contentsOfURL: NSURL(string: urlPic)!){
-                        let profilePicRef = storageRef.child(user!.uid)
-                        _ = profilePicRef.putData(imageData, metadata: nil){ metadata, error in
-                            if error != nil{
-                                print(error)
-                                return
+                    let storageRef = FIRStorage.storage().reference()
+                    let profilePic = FBSDKGraphRequest(graphPath: "me/picture", parameters: ["height": 240, "width": "240", "redirect": false], HTTPMethod: "GET")
+                    profilePic.startWithCompletionHandler({(connection, result, error) -> Void in
+                        if error != nil{
+                            print(error)
+                        }
+                        let dictionary = result as? NSDictionary
+                        let data = dictionary?.objectForKey("data")
+                        let urlPic = (data?.objectForKey("url"))! as! String
+                        
+                        if let imageData = NSData(contentsOfURL: NSURL(string: urlPic)!){
+                            let profilePicRef = storageRef.child(user!.uid)
+                            _ = profilePicRef.putData(imageData, metadata: nil){ metadata, error in
+                                if error != nil{
+                                    print(error)
+                                    return
+                                }
                             }
                         }
-                    }
-                    if let user = FIRAuth.auth()?.currentUser {
-                        let photoUrl = urlPic
-                        let name = user.displayName!
-                        let email = user.email!
-                        let userID = user.uid;
-                        
-                        let fbUser = ["uid": userID,
-                            "name": name,
-                            "email": email,
-                            "photoURL": photoUrl]
-                        
-                        ref.child("Users").child(userID).setValue(fbUser)
-                        
-                    } else {
-                        // No user is signed in.
-                    }
-                })
-                
+                        if let user = FIRAuth.auth()?.currentUser {
+                            let photoUrl = urlPic
+                            let name = user.displayName!
+                            let email = user.email!
+                            let userID = user.uid;
+                            
+                            let fbUser = ["uid": userID,
+                                "name": name,
+                                "email": email,
+                                "photoURL": photoUrl]
+                            
+                            ref.child("Users").child(userID).setValue(fbUser)
+                            
+                        } else {
+                            // No user is signed in.
+                        }
+                    })
             }
         }
     }
