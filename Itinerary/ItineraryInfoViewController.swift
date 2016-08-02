@@ -44,7 +44,7 @@ class ItineraryInfoViewController: UIViewController {
             self.titleLabel.text = snapshot.value!["Title"] as? String
             self.cityLabel.text = snapshot.value!["City"] as? String
             self.timeOfItineraryLabel.text = snapshot.value!["Duration"] as? String
-            self.roughtCostLabel.text = "$\((round(100.00 * (Double)((snapshot.value!["Cost"] as? String)!)!))/100.00)"
+            self.roughtCostLabel.text = "$\(String(format: "%.2f",((100.00 * (Double)((snapshot.value!["Cost"] as? String)!)!))/100.00))"
             self.categoryLabel.text = snapshot.value!["Category"] as? String
             self.tripSummaryTextView.text = snapshot.value!["Summary"] as? String
         })

@@ -10,6 +10,8 @@ import UIKit
 import Firebase
 import FirebaseStorage
 import FBSDKLoginKit
+import AlamofireImage
+import Alamofire
 
 class ProfileViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     @IBOutlet weak var emailLabel: UILabel!
@@ -79,10 +81,9 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         
             self.ref.child("Photos").child(self.userPhotosID[row]).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
                 if let profileImageURL = snapshot.childSnapshotForPath(String(0)).value!["image"] as? String{
-                    let url = NSURL(string: profileImageURL)
-                    let imageData = NSData(contentsOfURL: url!)
-                    let image  = UIImage(data: imageData!)
-                    cell.itineraryImage.image = image
+                    Alamofire.request(.GET, profileImageURL).response { (request, response, data, error) in
+                        cell.itineraryImage.image = UIImage(data: data!, scale:1)
+                    }
                 }
             })
         })

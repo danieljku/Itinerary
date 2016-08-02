@@ -8,6 +8,8 @@
 
 import UIKit
 import Firebase
+import Alamofire
+import AlamofireImage
 
 class ItinerarySearchViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var tableView: UITableView!
@@ -64,17 +66,17 @@ class ItinerarySearchViewController: UIViewController, UITableViewDelegate, UITa
             self.ref.child("Itineraries").child(itineraryID.key).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
                 cell.titleLabel.text = snapshot.value!["Title"] as? String
                 cell.cityLabel.text = snapshot.value!["City"] as? String
-                cell.costLabel.text = snapshot.value!["Cost"] as? String
+                cell.costLabel.text = "$\(String(format: "%.2f",((100.00 * (Double)((snapshot.value!["Cost"] as? String)!)!))/100.00))"
                 cell.categoryLabel.text = snapshot.value!["Category"] as? String
-            })
-            self.ref.child("Photos").child(itineraryID.key).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
-                if let profileImageURL = snapshot.childSnapshotForPath(String(0)).value!["image"] as? String{
-                    let url = NSURL(string: profileImageURL)
-                    let imageData = NSData(contentsOfURL: url!)
-                    let image  = UIImage(data: imageData!)
-                    cell.itineraryImage.image = image
-                }
-            })
+            
+                self.ref.child("Photos").child(itineraryID.key).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                    if let profileImageURL = snapshot.childSnapshotForPath(String(0)).value!["image"] as? String{
+                        Alamofire.request(.GET, profileImageURL).response { (request, response, data, error) in
+                            cell.itineraryImage.image = UIImage(data: data!, scale:1)
+                        }
+                    }
+                })
+        })
         return cell
     }
 
