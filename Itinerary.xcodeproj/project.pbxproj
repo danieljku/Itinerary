@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		121658301D47E826006F06A1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1216582E1D47E826006F06A1 /* Main.storyboard */; };
+		124000161D513DE000DD99B6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 124000151D513DE000DD99B6 /* Main.storyboard */; };
 		12765EE71D3822FA0012A567 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12765EE61D3822FA0012A567 /* SignUpViewController.swift */; };
 		12765EE91D3842680012A567 /* PasswordResetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12765EE81D3842680012A567 /* PasswordResetViewController.swift */; };
 		129083A21D4C07AF002174D6 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129083A11D4C07AF002174D6 /* TabBarViewController.swift */; };
@@ -27,7 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1216582F1D47E826006F06A1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		124000151D513DE000DD99B6 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		12765EE61D3822FA0012A567 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		12765EE81D3842680012A567 /* PasswordResetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordResetViewController.swift; sourceTree = "<group>"; };
 		129083A11D4C07AF002174D6 /* TabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
@@ -133,8 +133,8 @@
 				12A53BD61D3EE25400F9C7FF /* Views */,
 				129083A81D4C14F8002174D6 /* Controllers */,
 				12B588AF1D357CE100853EE7 /* AppDelegate.swift */,
+				124000151D513DE000DD99B6 /* Main.storyboard */,
 				12B588B61D357CE100853EE7 /* Assets.xcassets */,
-				1216582E1D47E826006F06A1 /* Main.storyboard */,
 				12B588B81D357CE100853EE7 /* LaunchScreen.storyboard */,
 				12B588BB1D357CE100853EE7 /* Info.plist */,
 				12B588C11D3586B400853EE7 /* GoogleService-Info.plist */,
@@ -234,7 +234,7 @@
 				12B588BA1D357CE100853EE7 /* LaunchScreen.storyboard in Resources */,
 				12B588B71D357CE100853EE7 /* Assets.xcassets in Resources */,
 				12B588C21D3586B400853EE7 /* GoogleService-Info.plist in Resources */,
-				121658301D47E826006F06A1 /* Main.storyboard in Resources */,
+				124000161D513DE000DD99B6 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -311,14 +311,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		1216582E1D47E826006F06A1 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				1216582F1D47E826006F06A1 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		12B588B81D357CE100853EE7 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

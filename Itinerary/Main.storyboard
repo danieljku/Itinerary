@@ -405,7 +405,7 @@
                                                 <rect key="frame" x="246" y="405" width="109" height="30"/>
                                                 <state key="normal" title="Add an Itinerary"/>
                                                 <connections>
-                                                    <segue destination="PqV-1k-tUk" kind="show" id="0J7-PY-ELb"/>
+                                                    <segue destination="PqV-1k-tUk" kind="show" identifier="AddItinerary" id="0J7-PY-ELb"/>
                                                 </connections>
                                             </button>
                                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AA0-sl-TJM">
@@ -452,7 +452,7 @@
                                                         </constraints>
                                                         <connections>
                                                             <outlet property="itineraryImage" destination="9Qz-E9-zK3" id="Ml1-df-a6r"/>
-                                                            <segue destination="jKj-Xn-eaK" kind="show" identifier="CollectionViewInfo" id="Eb0-K4-GIc"/>
+                                                            <segue destination="jKj-Xn-eaK" kind="show" identifier="ItineraryInfo" id="d7C-9N-8q3"/>
                                                         </connections>
                                                     </collectionViewCell>
                                                 </cells>
@@ -910,7 +910,7 @@
         <!--Itinerary Info-->
         <scene sceneID="P3i-ey-EEu">
             <objects>
-                <viewController title="Itinerary Info" id="jKj-Xn-eaK" customClass="ItineraryInfoViewController" customModule="Itinerary" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ItineraryInfoViewController" title="Itinerary Info" id="jKj-Xn-eaK" customClass="ItineraryInfoViewController" customModule="Itinerary" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="PyV-ZC-U7h"/>
                         <viewControllerLayoutGuide type="bottom" id="c4R-IQ-fSb"/>
@@ -1073,7 +1073,9 @@
                         <outlet property="categoryLabel" destination="KIt-6u-fpd" id="8Wr-Eb-Obg"/>
                         <outlet property="cityLabel" destination="D7a-hY-9gP" id="Uak-4M-JMU"/>
                         <outlet property="imageScrollView" destination="R9i-el-ioH" id="ShT-Yt-Nls"/>
+                        <outlet property="likeButton" destination="2kB-HL-don" id="1xt-Rz-2kl"/>
                         <outlet property="roughtCostLabel" destination="NrL-10-UHL" id="dwp-Pn-gIB"/>
+                        <outlet property="saveButton" destination="GNw-Dy-sUy" id="xka-OF-gaz"/>
                         <outlet property="tableViewButton" destination="I1g-QL-T0r" id="p5w-Os-hiu"/>
                         <outlet property="timeOfItineraryLabel" destination="lp1-Lg-tkW" id="opa-vJ-K4G"/>
                         <outlet property="titleLabel" destination="ml5-1I-5tp" id="0Ni-Mu-ITe"/>
@@ -1107,7 +1109,7 @@
         <image name="backgroundLogin" width="760" height="405"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="jVE-LU-Wv3"/>
         <segue reference="bDJ-Jg-cWU"/>
-        <segue reference="Eb0-K4-GIc"/>
     </inferredMetricsTieBreakers>
 </document>

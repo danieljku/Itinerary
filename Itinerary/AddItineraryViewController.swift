@@ -54,7 +54,7 @@ class AddItineraryViewController: UIViewController, UIImagePickerControllerDeleg
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let itineraryInfoViewController = segue.destinationViewController as! ItineraryInfoViewController
         if segue.identifier == "ItineraryInfo"{
-            itineraryInfoViewController.userID = itineraryID
+            itineraryInfoViewController.itineraryID = itineraryID
             itineraryInfoViewController.myImages = imageArray
             itineraryInfoViewController.prevLocation = "AddItineraryViewController"
         }

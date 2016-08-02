@@ -18,20 +18,22 @@ class ItineraryInfoViewController: UIViewController {
     @IBOutlet weak var categoryLabel: UILabel!
     @IBOutlet weak var tripSummaryTextView: UITextView!
     @IBOutlet weak var tableViewButton: UIBarButtonItem!
+    @IBOutlet weak var saveButton: UIButton!
+    @IBOutlet weak var likeButton: UIButton!
     
     var itineraryID: String!
     var myImages = [UIImage]()
-    var prevLocation = ""
+    var prevLocation = "ProfileViewController"
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         if prevLocation == "AddItineraryViewController"{
             tableViewButton.title = "Done"
-        }else if prevLocation == "ItinerarySearchViewController"{
+            likeButton.hidden = true
+            saveButton.hidden = true
+        }else if (prevLocation == "ItinerarySearchViewController" || prevLocation == "ProfileViewController"){
             tableViewButton.title = "Back"
-        }else{
-            tableViewButton.title = "Error"
         }
         
         // Do any additional setup after loading the view.
@@ -48,7 +50,6 @@ class ItineraryInfoViewController: UIViewController {
         })
             
         ref.child("Photos").child(itineraryID).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
-            
             var index = 0
             let numOfPhotos = Int(snapshot.childrenCount)
             var storageImages = [UIImage]()
@@ -62,7 +63,7 @@ class ItineraryInfoViewController: UIViewController {
                 }
                 index += 1
             }
-            if self.prevLocation == "ItinerarySearchViewController"{
+            if (self.prevLocation == "ItinerarySearchViewController" || self.prevLocation == "ProfileViewController"){
                 self.myImages = storageImages
             }
             let imageWidth:CGFloat = 120
@@ -92,7 +93,7 @@ class ItineraryInfoViewController: UIViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let tabBarViewController = segue.destinationViewController as! TabBarViewController
         if segue.identifier == "TabBarSelect"{
-            if prevLocation == "AddItineraryViewController"{
+            if (prevLocation == "AddItineraryViewController" || prevLocation == "ProfileViewController"){
                 tabBarViewController.tabBarIndex = 0
             }else{
                 tabBarViewController.tabBarIndex = 1

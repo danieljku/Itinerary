@@ -18,16 +18,16 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
     @IBOutlet weak var collectionView: UICollectionView!
     let ref = FIRDatabase.database().reference()
     var userPhotosID = [String]()
-    var myItineraryArray = [FIRDataSnapshot]()
+    var myItineraryArray = [String]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         ref.child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("MyItineraries").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
-            var snaps = [FIRDataSnapshot]()
+            var snaps = [String]()
             if let snapshots = snapshot.children.allObjects as? [FIRDataSnapshot] {
                 for snap in snapshots {
-                    snaps.append(snap)
+                    snaps.append((snap.value!["imageID"] as? String)!)
                 }
                 self.myItineraryArray = snaps
                 let range = NSMakeRange(0, self.collectionView.numberOfSections())
@@ -50,6 +50,20 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         })
     }
     
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "AddItinerary"{
+            //Segue to add itinerary view controller
+            print("Creating new itienrary")
+        }else if let indexPath = collectionView.indexPathForCell((sender as? UICollectionViewCell)!){
+            if segue.identifier == "ItineraryInfo" {
+                let itineraryInfoViewController = segue.destinationViewController as? ItineraryInfoViewController
+                itineraryInfoViewController?.itineraryID = myItineraryArray[indexPath.row]
+                itineraryInfoViewController?.prevLocation = "ProfileViewController"
+            }
+        }
+        
+    }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return myItineraryArray.count
@@ -77,17 +91,6 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         return cell
     }
 
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let identifier = segue.identifier {
-            if identifier == "CollectionViewInfo" {
-                let indexPath = collectionView.indexPathsForSelectedItems()
-                let itineraryInfoViewController = segue.destinationViewController as! ItineraryInfoViewController
-                itineraryInfoViewController.userID = self.itineraryArray[indexPath.row].key
-                itineraryInfoViewController.prevLocation = "ItinerarySearchViewController"
-            }
-        }
-    }
     
     @IBAction func logoutButton(sender: AnyObject) {
         try! FIRAuth.auth()!.signOut()
