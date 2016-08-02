@@ -13,7 +13,7 @@ import FBSDKLoginKit
 
 
 class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
-    var fbLoginSuccess = false
+    var userDoesExist = true
     @IBOutlet weak var loginButton: FBSDKLoginButton!
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
@@ -110,8 +110,20 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
                                 "email": email,
                                 "photoURL": photoUrl]
                             
-                            ref.child("Users").child(userID).setValue(fbUser)
+                            ref.child("Users").observeEventType(.Value, withBlock: { (snapshot) in
+                                if snapshot.hasChild(userID){
+                                    print("User exists")
+                                    self.userDoesExist = true
+                                }else{
+                                    self.userDoesExist = false
+                                    print("First time fb user")
+                                }
+                            })
                             
+                            if self.userDoesExist != true{
+                                ref.child("Users").child(userID).setValue(fbUser)
+                            }
+
                         } else {
                             // No user is signed in.
                         }

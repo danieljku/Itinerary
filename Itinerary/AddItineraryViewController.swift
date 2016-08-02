@@ -161,9 +161,14 @@ class AddItineraryViewController: UIViewController, UIImagePickerControllerDeleg
             })
             i += 1
         }
-        
+        var myItineraryCount = 0
+
+        ref.child("Users").child(userID!).child("MyItineraries").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+            myItineraryCount = Int(snapshot.childrenCount)
+            self.ref.child("Users").child(userID!).child("MyItineraries").child("\(myItineraryCount)").updateChildValues(["imageID": self.itineraryID])
+        })
+
         ref.child("Itineraries").child(itineraryID).setValue(itinerary)
-        ref.child("Users").child(userID!).child("MyItineraries").updateChildValues([itineraryID: itineraryTitleText.text!])
     }
     
 }

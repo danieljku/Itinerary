@@ -11,15 +11,31 @@ import Firebase
 import FirebaseStorage
 import FBSDKLoginKit
 
-class ProfileViewController: UIViewController {
+class ProfileViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var profileImageView: UIImageView!
-    
+    @IBOutlet weak var collectionView: UICollectionView!
+    let ref = FIRDatabase.database().reference()
+    var userPhotosID = [String]()
+    var myItineraryArray = [FIRDataSnapshot]()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let ref = FIRDatabase.database().reference()
+        ref.child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("MyItineraries").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+            var snaps = [FIRDataSnapshot]()
+            if let snapshots = snapshot.children.allObjects as? [FIRDataSnapshot] {
+                for snap in snapshots {
+                    snaps.append(snap)
+                }
+                self.myItineraryArray = snaps
+                let range = NSMakeRange(0, self.collectionView.numberOfSections())
+                let sections = NSIndexSet(indexesInRange: range)
+                self.collectionView.reloadSections(sections)
+            }
+            
+        })
         
         let userID = FIRAuth.auth()?.currentUser?.uid
         ref.child("Users").child(userID!).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
@@ -35,7 +51,44 @@ class ProfileViewController: UIViewController {
     }
     
     
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return myItineraryArray.count
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("ItineraryCell", forIndexPath: indexPath) as! ProfileItineraryCollectionViewCell
+        let row = indexPath.row
+        
+        ref.child("Users").child((FIRAuth.auth()?.currentUser?.uid)!).child("MyItineraries").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+            let itineraryID = snapshot.childSnapshotForPath(String(row)).value!["imageID"] as? String
+            self.userPhotosID.append(itineraryID!)
+        
+            self.ref.child("Photos").child(self.userPhotosID[row]).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                if let profileImageURL = snapshot.childSnapshotForPath(String(0)).value!["image"] as? String{
+                    let url = NSURL(string: profileImageURL)
+                    let imageData = NSData(contentsOfURL: url!)
+                    let image  = UIImage(data: imageData!)
+                    cell.itineraryImage.image = image
+                }
+            })
+        })
 
+        
+        return cell
+    }
+
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let identifier = segue.identifier {
+            if identifier == "CollectionViewInfo" {
+                let indexPath = collectionView.indexPathsForSelectedItems()
+                let itineraryInfoViewController = segue.destinationViewController as! ItineraryInfoViewController
+                itineraryInfoViewController.userID = self.itineraryArray[indexPath.row].key
+                itineraryInfoViewController.prevLocation = "ItinerarySearchViewController"
+            }
+        }
+    }
+    
     @IBAction func logoutButton(sender: AnyObject) {
         try! FIRAuth.auth()!.signOut()
         
@@ -45,11 +98,4 @@ class ProfileViewController: UIViewController {
         let homeViewController: UIViewController = mainStoryBoard.instantiateViewControllerWithIdentifier("LoginScreen")
         self.presentViewController(homeViewController, animated: true, completion: nil)
     }
-
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
 }

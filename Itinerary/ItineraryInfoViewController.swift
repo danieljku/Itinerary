@@ -19,7 +19,7 @@ class ItineraryInfoViewController: UIViewController {
     @IBOutlet weak var tripSummaryTextView: UITextView!
     @IBOutlet weak var tableViewButton: UIBarButtonItem!
     
-    var userID: String!
+    var itineraryID: String!
     var myImages = [UIImage]()
     var prevLocation = ""
 
@@ -37,7 +37,7 @@ class ItineraryInfoViewController: UIViewController {
         // Do any additional setup after loading the view.
         let ref = FIRDatabase.database().reference()
         
-        ref.child("Itineraries").child(userID).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+        ref.child("Itineraries").child(itineraryID).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
             // Get user value
             self.titleLabel.text = snapshot.value!["Title"] as? String
             self.cityLabel.text = snapshot.value!["City"] as? String
@@ -47,7 +47,7 @@ class ItineraryInfoViewController: UIViewController {
             self.tripSummaryTextView.text = snapshot.value!["Summary"] as? String
         })
             
-        ref.child("Photos").child(userID).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+        ref.child("Photos").child(itineraryID).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
             
             var index = 0
             let numOfPhotos = Int(snapshot.childrenCount)

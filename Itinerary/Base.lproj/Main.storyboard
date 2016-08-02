@@ -45,7 +45,7 @@
                                     <action selector="signInButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="YCq-7l-abq"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LOGO OR APP NAME" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XNf-Iy-49L">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MyItinerary" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XNf-Iy-49L">
                                 <rect key="frame" x="50" y="70" width="500" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -423,23 +423,43 @@
                                             </navigationBar>
                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="rZ3-9t-XwU">
                                                 <rect key="frame" x="0.0" y="471" width="600" height="329"/>
+                                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="saC-i6-jfs">
-                                                    <size key="itemSize" width="50" height="50"/>
+                                                    <size key="itemSize" width="109" height="105"/>
                                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                 </collectionViewFlowLayout>
                                                 <cells>
-                                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="ILT-3C-xvD">
-                                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ItineraryCell" id="ILT-3C-xvD" customClass="ProfileItineraryCollectionViewCell" customModule="Itinerary" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="0.0" width="109" height="105"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="109" height="105"/>
                                                             <autoresizingMask key="autoresizingMask"/>
+                                                            <subviews>
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9Qz-E9-zK3">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="109" height="105"/>
+                                                                </imageView>
+                                                            </subviews>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         </view>
+                                                        <constraints>
+                                                            <constraint firstAttribute="trailing" secondItem="9Qz-E9-zK3" secondAttribute="trailing" id="O0W-vv-h0w"/>
+                                                            <constraint firstAttribute="bottom" secondItem="9Qz-E9-zK3" secondAttribute="bottom" id="bbR-0A-151"/>
+                                                            <constraint firstItem="9Qz-E9-zK3" firstAttribute="top" secondItem="ILT-3C-xvD" secondAttribute="top" id="fkV-2P-YMl"/>
+                                                            <constraint firstItem="9Qz-E9-zK3" firstAttribute="leading" secondItem="ILT-3C-xvD" secondAttribute="leading" id="puX-l5-7i2"/>
+                                                        </constraints>
+                                                        <connections>
+                                                            <outlet property="itineraryImage" destination="9Qz-E9-zK3" id="Ml1-df-a6r"/>
+                                                            <segue destination="jKj-Xn-eaK" kind="show" identifier="CollectionViewInfo" id="Eb0-K4-GIc"/>
+                                                        </connections>
                                                     </collectionViewCell>
                                                 </cells>
+                                                <connections>
+                                                    <outlet property="dataSource" destination="rBc-VW-Bfw" id="ZBk-EZ-JfD"/>
+                                                    <outlet property="delegate" destination="rBc-VW-Bfw" id="WdP-dt-Aix"/>
+                                                </connections>
                                             </collectionView>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -492,6 +512,7 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="600" height="800"/>
                     <connections>
+                        <outlet property="collectionView" destination="rZ3-9t-XwU" id="0kZ-aR-8iZ"/>
                         <outlet property="emailLabel" destination="ieW-n2-gxC" id="iBT-7d-1DJ"/>
                         <outlet property="nameLabel" destination="yPu-0m-vmb" id="pPI-jx-nn0"/>
                         <outlet property="profileImageView" destination="FUI-jY-9X0" id="bOf-DQ-dCg"/>
@@ -748,7 +769,7 @@
                                 <rect key="frame" x="0.0" y="64" width="600" height="487"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="itineraryTableViewCell" rowHeight="147" id="et0-8c-qsr" customClass="ItinerarySearchTableViewCell" customModule="Itinerary" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="itineraryTableViewCell" rowHeight="147" id="et0-8c-qsr" customClass="ItinerarySearchTableViewCell" customModule="Itinerary" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="600" height="147"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="center" tableViewCell="et0-8c-qsr" id="9Fe-1E-OVu">
@@ -1086,7 +1107,7 @@
         <image name="backgroundLogin" width="760" height="405"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="jVE-LU-Wv3"/>
         <segue reference="bDJ-Jg-cWU"/>
+        <segue reference="Eb0-K4-GIc"/>
     </inferredMetricsTieBreakers>
 </document>

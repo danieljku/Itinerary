@@ -17,10 +17,6 @@ class ItinerarySearchViewController: UIViewController, UITableViewDelegate, UITa
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
         
         ref.child("Itineraries").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
             var snaps = [FIRDataSnapshot]()
@@ -37,6 +33,9 @@ class ItinerarySearchViewController: UIViewController, UITableViewDelegate, UITa
         })
     }
 
+//    override func viewDidAppear(animated: Bool) {
+//    }
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -47,7 +46,7 @@ class ItinerarySearchViewController: UIViewController, UITableViewDelegate, UITa
             if identifier == "ItineraryInfo" {
                 let indexPath = tableView.indexPathForSelectedRow!
                 let itineraryInfoViewController = segue.destinationViewController as! ItineraryInfoViewController
-                itineraryInfoViewController.userID = self.itineraryArray[indexPath.row].key
+                itineraryInfoViewController.itineraryID = self.itineraryArray[indexPath.row].key
                 itineraryInfoViewController.prevLocation = "ItinerarySearchViewController"
             }
         }
@@ -59,17 +58,16 @@ class ItinerarySearchViewController: UIViewController, UITableViewDelegate, UITa
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("itineraryTableViewCell", forIndexPath: indexPath) as! ItinerarySearchTableViewCell
         
-        dispatch_async(dispatch_get_main_queue()) {
             let row = indexPath.row
             
-            let userID = self.itineraryArray[row]
-            self.ref.child("Itineraries").child(userID.key).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+            let itineraryID = self.itineraryArray[row]
+            self.ref.child("Itineraries").child(itineraryID.key).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
                 cell.titleLabel.text = snapshot.value!["Title"] as? String
                 cell.cityLabel.text = snapshot.value!["City"] as? String
                 cell.costLabel.text = snapshot.value!["Cost"] as? String
                 cell.categoryLabel.text = snapshot.value!["Category"] as? String
             })
-            self.ref.child("Photos").child(userID.key).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+            self.ref.child("Photos").child(itineraryID.key).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
                 if let profileImageURL = snapshot.childSnapshotForPath(String(0)).value!["image"] as? String{
                     let url = NSURL(string: profileImageURL)
                     let imageData = NSData(contentsOfURL: url!)
@@ -77,8 +75,6 @@ class ItinerarySearchViewController: UIViewController, UITableViewDelegate, UITa
                     cell.itineraryImage.image = image
                 }
             })
-            
-        }
         return cell
     }
 
