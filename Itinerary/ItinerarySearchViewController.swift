@@ -22,12 +22,15 @@ class ItinerarySearchViewController: UIViewController, UITableViewDelegate, UITa
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         tableView.delegate = self
         tableView.dataSource = self
         searchBar.delegate = self
         searchBar.scopeButtonTitles = ["All", "Tourist", "Couple", "Friends", "Families"]
-        searchBar.barTintColor = UIColor(red:0.37, green:0.88, blue:0.70, alpha:1.0)
         searchBar.tintColor = UIColor(red:0.37, green:0.88, blue:0.70, alpha:1.0)
+        
+        tableView.rowHeight = UIScreen.mainScreen().bounds.size.width
+        
         searchBar.setScopeBarButtonTitleTextAttributes([NSForegroundColorAttributeName : UIColor.whiteColor()], forState: .Normal)
         searchBar.setScopeBarButtonTitleTextAttributes([NSForegroundColorAttributeName : UIColor.whiteColor()], forState: .Selected)
         
@@ -127,18 +130,14 @@ class ItinerarySearchViewController: UIViewController, UITableViewDelegate, UITa
             cell.cityLabel.text = snapshot.value!["City"] as? String
             cell.costLabel.text = "$\(String(format: "%.2f",((100.00 * (Double)((snapshot.value!["Cost"] as? String)!)!))/100.00))"
             cell.categoryLabel.text = snapshot.value!["Category"] as? String
-            cell.numOfLikesLabel.hidden = true
             
-            //cell.titleLabel.textColor =
+            cell.titleLabel.font = UIFont.boldSystemFontOfSize(20.0)
             
             self.ref.child("Photos").child(itineraryID.key).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
                 if let profileImageURL = snapshot.childSnapshotForPath(String(0)).value!["image"] as? String{
                     Alamofire.request(.GET, profileImageURL).response { (request, response, data, error) in
                         cell.itineraryImage.image = UIImage(data: data!)
-                        cell.itineraryImage.layer.borderWidth = 0
-                        cell.itineraryImage.layer.masksToBounds = false
-                        cell.itineraryImage.layer.cornerRadius = cell.itineraryImage.frame.height/5
-                        cell.itineraryImage.clipsToBounds = true
+
                     }
                 }
             })

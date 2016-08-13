@@ -20,6 +20,7 @@ class ItineraryInfoViewController: UIViewController {
     @IBOutlet weak var tableViewButton: UIBarButtonItem!
     @IBOutlet weak var saveButton: UIButton!
     @IBOutlet weak var likeButton: UIButton!
+    @IBOutlet weak var tripSummaryLabel: UILabel!
     
     var itineraryID: String!
     var myImages = [UIImage]()
@@ -28,20 +29,25 @@ class ItineraryInfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tripSummaryLabel.font = UIFont.boldSystemFontOfSize(17.0)
+        titleLabel.font = UIFont.boldSystemFontOfSize(20.0)
+        
+        timeOfItineraryLabel.layer.borderWidth = 0
+        timeOfItineraryLabel.layer.masksToBounds = false
+        timeOfItineraryLabel.layer.cornerRadius = timeOfItineraryLabel.frame.height/2
+        timeOfItineraryLabel.clipsToBounds = true
+        
         saveButton.hidden = true
         likeButton.hidden = true
 
-//        tripSummaryTextView.layer.borderWidth = 1
-//        tripSummaryTextView.layer.borderColor = UIColor.grayColor().CGColor
-        
         if prevLocation == "AddItineraryViewController"{
             tableViewButton.title = "Done"
-            tableViewButton.tintColor = UIColor(red:0.52, green:0.16, blue:0.35, alpha:1.0)
+            tableViewButton.tintColor = UIColor(red:0.37, green:0.88, blue:0.70, alpha:1.0)
             likeButton.hidden = true
             saveButton.hidden = true
         }else if (prevLocation == "ItinerarySearchViewController" || prevLocation == "ProfileViewController"){
             tableViewButton.title = "Back"
-            tableViewButton.tintColor = UIColor(red:0.52, green:0.16, blue:0.35, alpha:1.0)
+            tableViewButton.tintColor = UIColor(red:0.37, green:0.88, blue:0.70, alpha:1.0)
         }
         
         // Do any additional setup after loading the view.
@@ -64,10 +70,10 @@ class ItineraryInfoViewController: UIViewController {
             
             while(index < numOfPhotos){
                 if let profileImageURL = snapshot.childSnapshotForPath(String(index)).value!["image"] as? String{
-                    let url = NSURL(string: profileImageURL)
-                    let imageData = NSData(contentsOfURL: url!)
-                    let image  = UIImage(data: imageData!)
-                    storageImages.append(image!)
+                        let url = NSURL(string: profileImageURL)
+                        let imageData = NSData(contentsOfURL: url!)
+                        let image  = UIImage(data: imageData!)
+                        storageImages.append(image!)
                 }
                 index += 1
             }

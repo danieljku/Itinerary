@@ -38,7 +38,7 @@ class AddItineraryViewController: UIViewController, UIImagePickerControllerDeleg
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SignUpViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
         
-                summaryTextView.layer.borderWidth = 0.5
+        summaryTextView.layer.borderWidth = 1
         summaryTextView.layer.borderColor = UIColor.grayColor().CGColor
         
         // Do any additional setup after loading the view.
