@@ -17,6 +17,7 @@ class AddItineraryViewController: UIViewController, UIImagePickerControllerDeleg
     @IBOutlet weak var durationText: UITextField!
     @IBOutlet weak var roughCostText: UITextField!
     @IBOutlet weak var categorySegControl: UISegmentedControl!
+    @IBOutlet weak var createItineraryButton: UIButton!
     @IBOutlet weak var summaryTextView: UITextView!
     let ref = FIRDatabase.database().reference()
     let itineraryID = NSUUID().UUIDString
@@ -25,20 +26,42 @@ class AddItineraryViewController: UIViewController, UIImagePickerControllerDeleg
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        imagePicker.delegate = self
-        imagePicker.allowsEditing = true
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AddItineraryViewController.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil);
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AddItineraryViewController.keyboardWillHide(_:)), name:UIKeyboardWillHideNotification, object: nil);
+    
+        createItineraryButton.layer.borderWidth = 0
+        createItineraryButton.layer.masksToBounds = false
+        createItineraryButton.layer.cornerRadius = createItineraryButton.frame.height/6
+        createItineraryButton.clipsToBounds = true
         
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SignUpViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
+        
+                summaryTextView.layer.borderWidth = 0.5
+        summaryTextView.layer.borderColor = UIColor.grayColor().CGColor
+        
+        // Do any additional setup after loading the view.
         imagePicker.delegate = self
         imagePicker.allowsEditing = true
+        imagePicker.delegate = self
+        imagePicker.allowsEditing = true
+
+    }
+
+    func keyboardWillShow(sender: NSNotification) {
+        self.view.frame.origin.y = -50
+    }
+    
+    func keyboardWillHide(sender: NSNotification) {
+        self.view.frame.origin.y = 0
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
     
     func dismissKeyboard() {
         //Causes the view (or one of its embedded text fields) to resign the first responder status.
@@ -116,8 +139,38 @@ class AddItineraryViewController: UIViewController, UIImagePickerControllerDeleg
             category = "Friends"
         }else if(categorySegControl.selectedSegmentIndex == 3){
             category = "Family"
-        }else{
-            let alertController = UIAlertController(title: "Choose a category!", message: "", preferredStyle: .Alert)
+        }
+        
+        if itineraryTitleText.text == ""{
+            let alertController = UIAlertController(title: "Enter in a title", message: "", preferredStyle: .Alert)
+            alertController.addAction(UIAlertAction(title: "Dismiss", style: .Default, handler: nil))
+            presentViewController(alertController, animated: true, completion: nil)
+            return
+        }
+        
+        if cityText.text == ""{
+            let alertController = UIAlertController(title: "Enter in a city", message: "", preferredStyle: .Alert)
+            alertController.addAction(UIAlertAction(title: "Dismiss", style: .Default, handler: nil))
+            presentViewController(alertController, animated: true, completion: nil)
+            return
+        }
+        
+        if durationText.text == ""{
+            let alertController = UIAlertController(title: "Enter in the duration of your itinerary", message: "", preferredStyle: .Alert)
+            alertController.addAction(UIAlertAction(title: "Dismiss", style: .Default, handler: nil))
+            presentViewController(alertController, animated: true, completion: nil)
+            return
+        }
+        
+        if roughCostText.text == ""{
+            let alertController = UIAlertController(title: "Enter in a rough cost", message: "", preferredStyle: .Alert)
+            alertController.addAction(UIAlertAction(title: "Dismiss", style: .Default, handler: nil))
+            presentViewController(alertController, animated: true, completion: nil)
+            return
+        }
+        
+        if summaryTextView.text == ""{
+            let alertController = UIAlertController(title: "Say something about your itinerary", message: "", preferredStyle: .Alert)
             alertController.addAction(UIAlertAction(title: "Dismiss", style: .Default, handler: nil))
             presentViewController(alertController, animated: true, completion: nil)
             return
@@ -139,7 +192,7 @@ class AddItineraryViewController: UIViewController, UIImagePickerControllerDeleg
 
         while i < imageArray.count{
             let imageName = NSUUID().UUIDString
-            let storageRef = FIRStorage.storage().reference().child("\(imageName)")
+            let storageRef = FIRStorage.storage().reference().child(userID!).child("\(imageName)")
             let uploadData = UIImagePNGRepresentation(imageArray[i])
             
             storageRef.putData(uploadData!, metadata: nil, completion: { (metadata, error) in
@@ -165,7 +218,7 @@ class AddItineraryViewController: UIViewController, UIImagePickerControllerDeleg
 
         ref.child("Users").child(userID!).child("MyItineraries").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
             myItineraryCount = Int(snapshot.childrenCount)
-            self.ref.child("Users").child(userID!).child("MyItineraries").child("\(myItineraryCount)").updateChildValues(["imageID": self.itineraryID])
+            self.ref.child("Users").child(userID!).child("MyItineraries").child("\(myItineraryCount)").updateChildValues(["itineraryID": self.itineraryID])
         })
 
         ref.child("Itineraries").child(itineraryID).setValue(itinerary)

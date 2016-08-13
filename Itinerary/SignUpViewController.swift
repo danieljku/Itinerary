@@ -16,6 +16,7 @@ class SignUpViewController: UIViewController, UINavigationControllerDelegate, UI
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
     @IBOutlet weak var confirmPassField: UITextField!
+    @IBOutlet weak var createAccountButton: UIButton!
     let ref = FIRDatabase.database().reference()
     let imagePicker = UIImagePickerController()
 
@@ -23,8 +24,23 @@ class SignUpViewController: UIViewController, UINavigationControllerDelegate, UI
         super.viewDidLoad()
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SignUpViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AddItineraryViewController.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil);
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AddItineraryViewController.keyboardWillHide(_:)), name:UIKeyboardWillHideNotification, object: nil);
+
         imagePicker.delegate = self
         imagePicker.allowsEditing = true
+        
+        createAccountButton.layer.borderWidth = 0
+        createAccountButton.layer.masksToBounds = false
+        createAccountButton.layer.cornerRadius = createAccountButton.frame.height/6
+        createAccountButton.clipsToBounds = true
+        
+        profilePhoto.layer.borderWidth = 0
+        profilePhoto.layer.masksToBounds = false
+        profilePhoto.layer.cornerRadius = profilePhoto.frame.height/2
+        profilePhoto.clipsToBounds = true
+
 
         // Do any additional setup after loading the view.
     }
@@ -32,6 +48,14 @@ class SignUpViewController: UIViewController, UINavigationControllerDelegate, UI
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func keyboardWillShow(sender: NSNotification) {
+        self.view.frame.origin.y = -50
+    }
+    
+    func keyboardWillHide(sender: NSNotification) {
+        self.view.frame.origin.y = 0
     }
     
     func dismissKeyboard() {

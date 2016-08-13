@@ -15,13 +15,30 @@ import FBSDKLoginKit
 class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     var userDoesExist = true
     @IBOutlet weak var loginButton: FBSDKLoginButton!
+    @IBOutlet weak var signInButton: UIButton!
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
+    @IBOutlet weak var errorMessageLabel: UITextView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(LoginViewController.dismissKeyboard))
+        errorMessageLabel.hidden = true
+        
+        loginButton.layer.borderWidth = 0
+        loginButton.layer.masksToBounds = false
+        loginButton.layer.cornerRadius = loginButton.frame.height/6
+        loginButton.clipsToBounds = true
+        
+        signInButton.layer.borderWidth = 0
+        signInButton.layer.masksToBounds = false
+        signInButton.layer.cornerRadius = signInButton.frame.height/6
+        signInButton.clipsToBounds = true
+        
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SignUpViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AddItineraryViewController.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil);
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AddItineraryViewController.keyboardWillHide(_:)), name:UIKeyboardWillHideNotification, object: nil);
         
         FIRAuth.auth()?.addAuthStateDidChangeListener { auth, user in
             if user != nil {
@@ -37,6 +54,14 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         }
     }
     
+    func keyboardWillShow(sender: NSNotification) {
+        self.view.frame.origin.y = -50
+    }
+    
+    func keyboardWillHide(sender: NSNotification) {
+        self.view.frame.origin.y = 0
+    }
+    
     func dismissKeyboard() {
         //Causes the view (or one of its embedded text fields) to resign the first responder status.
         view.endEditing(true)
@@ -45,7 +70,10 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     @IBAction func signInButton(sender: AnyObject) {
         FIRAuth.auth()?.signInWithEmail(emailField.text!, password: passwordField.text!) { (user, error) in
             if error != nil{
-                print(error)
+                self.errorMessageLabel.hidden = false
+                self.errorMessageLabel.text = "Login failed. Please try again"
+                self.errorMessageLabel.textColor = UIColor.redColor()
+                self.errorMessageLabel.textAlignment = .Center
                 return
             }
             let mainStoryBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)

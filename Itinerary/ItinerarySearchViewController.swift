@@ -11,14 +11,25 @@ import Firebase
 import Alamofire
 import AlamofireImage
 
-class ItinerarySearchViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ItinerarySearchViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var searchBar: UISearchBar!
+    
     let ref = FIRDatabase.database().reference()
     var itineraryArray = [FIRDataSnapshot]()
+    var searchActive = false
+    var filtered = [FIRDataSnapshot]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        tableView.delegate = self
+        tableView.dataSource = self
+        searchBar.delegate = self
+        searchBar.scopeButtonTitles = ["All", "Tourist", "Couple", "Friends", "Families"]
+        searchBar.barTintColor = UIColor(red:0.37, green:0.88, blue:0.70, alpha:1.0)
+        searchBar.tintColor = UIColor(red:0.37, green:0.88, blue:0.70, alpha:1.0)
+        searchBar.setScopeBarButtonTitleTextAttributes([NSForegroundColorAttributeName : UIColor.whiteColor()], forState: .Normal)
+        searchBar.setScopeBarButtonTitleTextAttributes([NSForegroundColorAttributeName : UIColor.whiteColor()], forState: .Selected)
         
         ref.child("Itineraries").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
             var snaps = [FIRDataSnapshot]()
@@ -35,8 +46,44 @@ class ItinerarySearchViewController: UIViewController, UITableViewDelegate, UITa
         })
     }
 
-//    override func viewDidAppear(animated: Bool) {
-//    }
+    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+        searchActive = true;
+    }
+    
+    func searchBarTextDidEndEditing(searchBar: UISearchBar) {
+        searchActive = false;
+    }
+    
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        searchActive = false;
+    }
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        searchActive = false;
+    }
+    
+    func filterContentForSearchText(searchText: String, scope: String = "All") {
+        filtered = itineraryArray.filter { snap in
+            let categoryMatch = (snap.value!["Category"] as? String == scope)
+            return categoryMatch && (snap.value!["City"] as? String)!.lowercaseString.containsString(searchText.lowercaseString)
+        }
+        
+        tableView.reloadData()
+    }
+    
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        filtered = itineraryArray.filter({ (text) -> Bool in
+            let tmp = text.value!["City"] as? String
+            let range = tmp!.rangeOfString(searchText, options: NSStringCompareOptions.CaseInsensitiveSearch)
+            return range != nil
+        })
+        if(filtered.count == 0){
+            searchActive = false;
+        } else {
+            searchActive = true;
+        }
+        self.tableView.reloadData()
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -55,27 +102,46 @@ class ItinerarySearchViewController: UIViewController, UITableViewDelegate, UITa
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if(searchActive) {
+            return filtered.count
+        }
         return itineraryArray.count
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("itineraryTableViewCell", forIndexPath: indexPath) as! ItinerarySearchTableViewCell
         
-            let row = indexPath.row
+//        cell.layer.borderWidth = 0.5
+//        cell.layer.borderColor = UIColor.grayColor().CGColor
+
+        
+        let row = indexPath.row
+        var itineraryID = itineraryArray[row]
+        
+        if(searchActive){
+            itineraryID = filtered[row]
+        }else{
+            itineraryID = itineraryArray[row]
+        }
+        self.ref.child("Itineraries").child(itineraryID.key).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+            cell.titleLabel.text = snapshot.value!["Title"] as? String
+            cell.cityLabel.text = snapshot.value!["City"] as? String
+            cell.costLabel.text = "$\(String(format: "%.2f",((100.00 * (Double)((snapshot.value!["Cost"] as? String)!)!))/100.00))"
+            cell.categoryLabel.text = snapshot.value!["Category"] as? String
+            cell.numOfLikesLabel.hidden = true
             
-            let itineraryID = self.itineraryArray[row]
-            self.ref.child("Itineraries").child(itineraryID.key).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
-                cell.titleLabel.text = snapshot.value!["Title"] as? String
-                cell.cityLabel.text = snapshot.value!["City"] as? String
-                cell.costLabel.text = "$\(String(format: "%.2f",((100.00 * (Double)((snapshot.value!["Cost"] as? String)!)!))/100.00))"
-                cell.categoryLabel.text = snapshot.value!["Category"] as? String
+            //cell.titleLabel.textColor =
             
-                self.ref.child("Photos").child(itineraryID.key).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
-                    if let profileImageURL = snapshot.childSnapshotForPath(String(0)).value!["image"] as? String{
-                        Alamofire.request(.GET, profileImageURL).response { (request, response, data, error) in
-                            cell.itineraryImage.image = UIImage(data: data!, scale:1)
-                        }
+            self.ref.child("Photos").child(itineraryID.key).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                if let profileImageURL = snapshot.childSnapshotForPath(String(0)).value!["image"] as? String{
+                    Alamofire.request(.GET, profileImageURL).response { (request, response, data, error) in
+                        cell.itineraryImage.image = UIImage(data: data!)
+                        cell.itineraryImage.layer.borderWidth = 0
+                        cell.itineraryImage.layer.masksToBounds = false
+                        cell.itineraryImage.layer.cornerRadius = cell.itineraryImage.frame.height/5
+                        cell.itineraryImage.clipsToBounds = true
                     }
-                })
+                }
+            })
         })
         return cell
     }

@@ -27,13 +27,21 @@ class ItineraryInfoViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        saveButton.hidden = true
+        likeButton.hidden = true
 
+//        tripSummaryTextView.layer.borderWidth = 1
+//        tripSummaryTextView.layer.borderColor = UIColor.grayColor().CGColor
+        
         if prevLocation == "AddItineraryViewController"{
             tableViewButton.title = "Done"
+            tableViewButton.tintColor = UIColor(red:0.52, green:0.16, blue:0.35, alpha:1.0)
             likeButton.hidden = true
             saveButton.hidden = true
         }else if (prevLocation == "ItinerarySearchViewController" || prevLocation == "ProfileViewController"){
             tableViewButton.title = "Back"
+            tableViewButton.tintColor = UIColor(red:0.52, green:0.16, blue:0.35, alpha:1.0)
         }
         
         // Do any additional setup after loading the view.
@@ -93,8 +101,11 @@ class ItineraryInfoViewController: UIViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let tabBarViewController = segue.destinationViewController as! TabBarViewController
         if segue.identifier == "TabBarSelect"{
-            if (prevLocation == "AddItineraryViewController" || prevLocation == "ProfileViewController"){
+            print(prevLocation)
+            if prevLocation == "ItinerarySearchViewController"{
                 tabBarViewController.tabBarIndex = 0
+            }else if prevLocation == "ProfileViewController"{
+                tabBarViewController.tabBarIndex = 2
             }else{
                 tabBarViewController.tabBarIndex = 1
             }

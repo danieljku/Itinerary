@@ -17,7 +17,7 @@ class TabBarViewController: UITabBarController {
         if tabBarIndex == 0{
             self.selectedIndex = 0
         }else{
-            self.selectedIndex = 1
+            self.selectedIndex = 2
         }
     }
 
